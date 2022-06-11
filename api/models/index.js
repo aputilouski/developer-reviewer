@@ -1,8 +1,11 @@
+const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const Meme = require('./Meme');
 
-const db = new Sequelize('db', '', '', { dialect: 'sqlite', storage: 'db.sqlite' });
+const storage = path.normalize(__dirname + '/../../db.sqlite');
+
+const db = new Sequelize('db', '', '', { dialect: 'sqlite', storage });
 
 const MemeModel = Meme(db, DataTypes);
 

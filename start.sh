@@ -6,7 +6,4 @@ if ! [ -f $FILE ]
 then node api/bin/create-db.js
 fi
 
-cd api
-
-yarn app
-
+yarn --cwd api app 
