@@ -4,7 +4,7 @@ const Post = ({ post }) => (
       <img //
         src={post.url}
         alt={post.name}
-        className="max-w-full max-h-full"
+        className="max-w-full max-h-full border"
       />
     </div>
 
