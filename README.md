@@ -3,7 +3,7 @@
 ### Launch:
 
 1. install node_modules manually (yarn install)
-2. `bash start.sh` - command to run the application (app only works in dev mode).
+2. `bash start.sh` - command to run the application (app only works for development mode).
 
 ### Additional notes:
 
