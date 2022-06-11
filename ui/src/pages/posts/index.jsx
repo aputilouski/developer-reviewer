@@ -8,9 +8,11 @@ const Posts = () => {
 
   return (
     <Spin spinning={!data}>
-      {data?.rows.map(post => (
-        <Post key={post.id} post={post} />
-      ))}
+      <div className="flex flex-col gap-3">
+        {data?.rows.map(post => (
+          <Post key={post.id} post={post} />
+        ))}
+      </div>
     </Spin>
   );
 };
