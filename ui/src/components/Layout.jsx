@@ -19,7 +19,7 @@ const Layout = ({ children }) => (
   <div className="max-w-6xl mx-auto">
     <Header />
     <Divider />
-    <div className="py-5">{children}</div>
+    <div className="flex justify-center items-center py-5">{children}</div>
   </div>
 );
 
