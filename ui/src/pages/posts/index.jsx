@@ -5,6 +5,8 @@ import useInfiniteScroll from './useInfinite';
 import ModalComponent from './ModalComponent';
 
 const Posts = () => {
+
+  // Scroll
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
 
@@ -31,7 +33,7 @@ const Posts = () => {
     setIsFetching(true);
   };
 
-  
+
   useEffect(() => {
     loadData();
     window.addEventListener('scroll', isScrolling);
@@ -59,7 +61,7 @@ const Posts = () => {
 
   return (
     <>
-      <Spin spinning={!data?.length}>
+      <Spin spinning={!data?.length && !isFetching}>
         <div className="flex flex-col gap-3">
           {data?.map(post => (
             <div key={post.id} className="w-full mx-auto py-4 border p-1.5 hover:shadow-2xl" onClick={() => openModal(post.id)}>
@@ -70,6 +72,7 @@ const Posts = () => {
               <p className="text-center text-lg font-semibold">{post.name}</p>
             </div>
           ))}
+          <Spin spinning='true'></Spin>
         </div>
       </Spin>
       {modalIsOpen && <ModalComponent modalIsOpen={modalIsOpen} closeModal={closeModal} data={data} id={id} />}
