@@ -1,22 +1,25 @@
 import React from 'react';
+import { Spin } from 'components';
 
-const Modal = ({ setIsOpen, post }) => {
+const Modal = ({ data, id }) => {
   return (
-    <>
-      <div className="bg-gray-500 fixed top-0 left-0 right-0 bottom-0" onClick={() => setIsOpen(false)} />
-      <div className="fixed">
-        <button className="bg-red-500" onClick={() => setIsOpen(false)}>
-          Close
-        </button>
-        <div className="max-w-md w-full mx-auto py-4 border p-1.5" onClick={() => setIsOpen(true)}>
-          <div className="h-96 w-full mb-2.5 flex items-center justify-center">
-            <img src={post.url} alt={post.name} className="max-w-full max-h-full border" />
-          </div>
+    <div className='flex flex-col mt-24'>
+      <div className="flex justify-center items-center ">
+        <Spin spinning={!data?.length}>
+          <div className="flex gap-3 overflow-x-auto">
+            {data?.slice(data.findIndex(currentPost => currentPost.id === id)).map(post => (
+              <div className="w-[550px] mx-auto py-4 p-1.5">
+                <div className="h-96 mb-2.5 flex items-center justify-center">
+                  <img src={post.url} alt={post.name} className="max-w-[530px] max-h-[260px] border" />
+                </div>
 
-          <p className="text-center text-lg font-semibold">{post.name}</p>
-        </div>
+                <p className="text-center text-lg font-semibold">{post.name}</p>
+              </div>
+            ))}
+          </div>
+        </Spin>
       </div>
-    </>
+    </div>
   );
 };
 
