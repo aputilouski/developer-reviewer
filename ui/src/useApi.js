@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-let baseUrl=process.env.SERVER_URL || "http://localhost:9000"
+let baseUrl="http://localhost:9000"  //remote server: https://meme-202.herokuapp.com/
 export default function useApi(pageNumber){
 
   const [loading,setLoading]=useState(true)
@@ -18,6 +18,8 @@ useEffect(()=>{
   setData(prevData=> [...prevData,...res.data.rows])
   setCurrentPage(pageNumber)
   setLoading(false)
+ }).catch(e=>{
+  setError(error)
  })
 },[pageNumber])
 return {data,error,loading}

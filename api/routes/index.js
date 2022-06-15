@@ -17,9 +17,7 @@ router.get("/posts/:pageNumber",async (req,res)=>{
 
   try {
     const rows = await MemeModel.findAll({limit:8,offset:(parseInt(req.params.pageNumber)-1)*8});
-    setTimeout(() => {
       res.json({ rows });
-    }, 200);
   } catch (error) {
     console.log(error);
     res.status(500).send(error.message || 'Some error occurred while fetching posts.');
