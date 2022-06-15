@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.ril__navButtonPrev{
+    background: url('../images/left_arrow_icon.svg');
+  
+}
+.ril__navButtonNext{
+    background: url('../images/right_arrow_icon.svg');
+}
+.ril__closeButton{
+    background: url('../images/close_delete_icon.svg');
+    background-size: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.ril__navButtonPrev,.ril__navButtonNext{
+    background-size: 50px;
+    background-color: rgba(0,0,0,0.5);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.ril__image{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
