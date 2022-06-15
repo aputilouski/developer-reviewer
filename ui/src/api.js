@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:9000';
-
 const api = {
-  getPosts: () => axios.get('/posts').then(res => res.data),
+  getPosts: (pageNumber) => axios.get(`http://localhost:9000/posts?page=${pageNumber}&limit=8`).then(res => res.data),
 };
 
 export default api;
