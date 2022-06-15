@@ -1,5 +1,5 @@
-const Post = ({ post }) => (
-  <div className="max-w-md w-full mx-auto py-4 border p-1.5">
+const Post = ({ post ,reff,onClick}) => (
+  <div onClick={onClick} ref={reff} className="max-w-md w-full mx-auto py-4 border p-1.5">
     <div className="h-96 w-full mb-2.5 flex items-center justify-center">
       <img //
         src={post.url}

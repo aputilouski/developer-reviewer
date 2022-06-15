@@ -1,18 +1,19 @@
-import api from 'api';
-import useSWR from 'swr';
+import useApi from 'useApi';
 import { Spin } from 'components';
-import Post from './Post';
+import {  useState } from 'react';
+import VerticlePosts from './VerticlePosts';
+import HorizontalPosts from './HorizontalPosts';
 
 const Posts = () => {
-  const { data } = useSWR('posts', api.getPosts);
+  const [pageNumber,setPageNumber]=useState(1)
+  const [isPostClicked,setIsPostClicked]=useState(false)
 
+  const {data,error,loading}=useApi(pageNumber)
+   
   return (
     <Spin spinning={!data}>
-      <div className="flex flex-col gap-3">
-        {data?.rows.map(post => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
+      <VerticlePosts data={data}  isPostClicked={isPostClicked}  loading={loading}  setPageNumber={setPageNumber}  setIsPostClicked={setIsPostClicked}/>
+     {isPostClicked!==false && <HorizontalPosts data={data} isPostClicked={isPostClicked} setIsPostClicked={setIsPostClicked}/>}
     </Spin>
   );
 };
