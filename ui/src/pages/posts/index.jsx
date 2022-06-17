@@ -27,7 +27,7 @@ const Posts = () => {
   const [openImages, setOpenImages] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  const { data: Result, size, setSize } = useSWRInfinite(index => api.getPostsUrl(index + 1), fetcher);
+  const { data: Result, size, setSize } = useSWRInfinite(index => api.getPostsUrl(index + 1), fetcher, { revalidateFirstPage: false });
   const mergeRecords = [];
   Result?.forEach(res => mergeRecords.push(...res?.rows));
   const images = mergeRecords?.map(post => post?.url);
@@ -42,14 +42,14 @@ const Posts = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, size]
+    [loading, size, mergeRecords.length, setSize, totalRecords]
   );
 
   return (
     <>
       <Spin spinning={!Result}>
         <DialogComponent open={open} setOpen={setOpen}>
-          <HorizontalPost open={open} setOpen={setOpen} setOpenImages={setOpenImages} mergeRecords={mergeRecords} lastElementRef={lastElementRef} setPhotoIndex={setPhotoIndex} loading={loading} />
+          <HorizontalPost open={open} setOpen={setOpen} setOpenImages={setOpenImages} mergeRecords={mergeRecords} setPhotoIndex={setPhotoIndex} loading={loading} setSize={setSize} size={size} totalRecords={totalRecords} />
         </DialogComponent>
 
         <div className="flex flex-col gap-3">
