@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite';
 
 import { Spin } from 'components';
 import Post from './Post';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
 import { CircularProgress } from '@mui/material';
 import 'react-image-lightbox/style.css';
@@ -26,6 +26,7 @@ const Posts = () => {
   const [open, setOpen] = useState(false);
   const [openImages, setOpenImages] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [postId, setPostId] = useState('');
 
   const { data: Result, size, setSize } = useSWRInfinite(index => api.getPostsUrl(index + 1), fetcher, { revalidateFirstPage: false });
   const mergeRecords = [];
@@ -45,17 +46,45 @@ const Posts = () => {
     [loading, size, mergeRecords.length, setSize, totalRecords]
   );
 
+  const handleOpenHorizontalPosts = ({ open, id }) => {
+    setOpen(open);
+    setPostId(id);
+  };
+
+  useEffect(() => {
+    if (!open) {
+      const element = document.getElementById(`${postId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [open, postId]);
+
   return (
-    <>
+    <div>
       <Spin spinning={!Result}>
         <DialogComponent open={open} setOpen={setOpen}>
-          <HorizontalPost open={open} setOpen={setOpen} setOpenImages={setOpenImages} mergeRecords={mergeRecords} setPhotoIndex={setPhotoIndex} loading={loading} setSize={setSize} size={size} totalRecords={totalRecords} />
+          <HorizontalPost
+            {...{
+              open,
+              handleOpenHorizontalPosts,
+              setOpenImages,
+              mergeRecords,
+              setPhotoIndex,
+              loading,
+              setSize,
+              size,
+              totalRecords,
+              postId,
+              setPostId,
+            }}
+          />
         </DialogComponent>
 
-        <div className="flex flex-col gap-3">
+        <div id="mainPostDiv" className="flex flex-col gap-3">
           {mergeRecords?.map((post, index) => (
-            <div key={post.id} ref={index === mergeRecords?.length - 1 ? lastElementRef : null}>
-              <Post open={open} post={post} setOpen={setOpen} />
+            <div id={`${index}-${post?.name}`} key={post.id} ref={index === mergeRecords?.length - 1 ? lastElementRef : null}>
+              <Post {...{ open, post, setOpen, handleOpenHorizontalPosts, index }} />
             </div>
           ))}
           <div className="grid place-items-center py-4">{loading && <CircularProgress />}</div>
@@ -63,7 +92,7 @@ const Posts = () => {
       </Spin>
 
       {!!images?.length && openImages && <Lightbox clickOutsideToClose={false} mainSrc={images[photoIndex]} nextSrc={images[(photoIndex + 1) % images.length]} prevSrc={images[(photoIndex + images.length - 1) % images.length]} onCloseRequest={() => setOpenImages(false)} onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)} onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)} />}
-    </>
+    </div>
   );
 };
 
