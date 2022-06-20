@@ -46,9 +46,16 @@ const Posts = () => {
     [loading, size, mergeRecords.length, setSize, totalRecords]
   );
 
-  const handleOpenHorizontalPosts = ({ open, id }) => {
-    setOpen(open);
+  const handleOpenHorizontalPosts = ({ isOpenPost, id }) => {
+    setOpen(isOpenPost);
     setPostId(id);
+  };
+
+  const handleOpenImages = ({ isOpenPost, id, index }) => {
+    setOpen(isOpenPost);
+    if (id) setPostId(id);
+    setPhotoIndex(index);
+    setOpenImages(true);
   };
 
   useEffect(() => {
@@ -67,16 +74,15 @@ const Posts = () => {
           <HorizontalPost
             {...{
               open,
-              handleOpenHorizontalPosts,
-              setOpenImages,
-              mergeRecords,
-              setPhotoIndex,
-              loading,
-              setSize,
               size,
-              totalRecords,
               postId,
+              setSize,
+              loading,
               setPostId,
+              totalRecords,
+              mergeRecords,
+              handleOpenImages,
+              handleOpenHorizontalPosts,
             }}
           />
         </DialogComponent>
@@ -84,7 +90,7 @@ const Posts = () => {
         <div id="mainPostDiv" className="flex flex-col gap-3">
           {mergeRecords?.map((post, index) => (
             <div id={`${index}-${post?.name}`} key={post.id} ref={index === mergeRecords?.length - 1 ? lastElementRef : null}>
-              <Post {...{ open, post, setOpen, handleOpenHorizontalPosts, index }} />
+              <Post {...{ open, post, index, handleOpenHorizontalPosts, handleOpenImages }} />
             </div>
           ))}
           <div className="grid place-items-center py-4">{loading && <CircularProgress />}</div>

@@ -3,7 +3,7 @@ import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { CircularProgress } from '@mui/material';
 import Post from './Post';
 
-const HorizontalPost = ({ open, setOpenImages, handleOpenHorizontalPosts, mergeRecords, setPhotoIndex, loading, setSize, size, totalRecords, postId, setPostId }) => {
+const HorizontalPost = ({ open, size, postId, setSize, loading, setPostId, totalRecords, mergeRecords, handleOpenImages, handleOpenHorizontalPosts }) => {
   const observer = useRef();
   const observeAll = useRef();
 
@@ -57,7 +57,15 @@ const HorizontalPost = ({ open, setOpenImages, handleOpenHorizontalPosts, mergeR
       <div id="slider" className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide">
         {mergeRecords?.map((post, index) => (
           <div id={`horizontal-${index}-${post?.name}`} className="w-[400px] inline-block p-2 cursor-pointer" key={post.id} ref={index === mergeRecords?.length - 1 ? lastElementRef : AllElementRef}>
-            <Post post={post} setPhotoIndex={setPhotoIndex} index={index} open={open} setOpenImages={setOpenImages} handleOpenHorizontalPosts={handleOpenHorizontalPosts} />
+            <Post
+              {...{
+                post,
+                open,
+                index,
+                handleOpenImages,
+                handleOpenHorizontalPosts,
+              }}
+            />
           </div>
         ))}
       </div>
