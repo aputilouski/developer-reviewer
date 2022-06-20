@@ -31,7 +31,6 @@ const Posts = () => {
   const { data: Result, size, setSize } = useSWRInfinite(index => api.getPostsUrl(index + 1), fetcher, { revalidateFirstPage: false });
   const mergeRecords = [];
   Result?.forEach(res => mergeRecords.push(...res?.rows));
-  const images = mergeRecords?.map(post => post?.url);
 
   const lastElementRef = useCallback(
     node => {
@@ -97,7 +96,27 @@ const Posts = () => {
         </div>
       </Spin>
 
-      {!!images?.length && openImages && <Lightbox clickOutsideToClose={false} mainSrc={images[photoIndex]} nextSrc={images[(photoIndex + 1) % images.length]} prevSrc={images[(photoIndex + images.length - 1) % images.length]} onCloseRequest={() => setOpenImages(false)} onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)} onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)} />}
+      {!!mergeRecords?.length && openImages && (
+        <Lightbox
+          clickOutsideToClose={false}
+          mainSrc={mergeRecords[photoIndex].url}
+          nextSrc={mergeRecords[(photoIndex + 1) % mergeRecords.length].url}
+          prevSrc={mergeRecords[(photoIndex + mergeRecords.length - 1) % mergeRecords.length].url}
+          onCloseRequest={() => setOpenImages(false)}
+          onMovePrevRequest={() => {
+            const prevIndex = (photoIndex + mergeRecords.length - 1) % mergeRecords.length;
+            const record = mergeRecords[prevIndex];
+            setPhotoIndex(prevIndex);
+            setPostId(`${record.id - 1}-${record.name}`);
+          }}
+          onMoveNextRequest={() => {
+            const nextIndex = (photoIndex + 1) % mergeRecords.length;
+            const record = mergeRecords[nextIndex];
+            setPhotoIndex(nextIndex);
+            setPostId(`${record.id - 1}-${record.name}`);
+          }}
+        />
+      )}
     </div>
   );
 };
